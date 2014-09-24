@@ -1,3 +1,6 @@
-This is the source code for the article Writing a RESTful Web Service with Slim
-by Shameer C available at http://sitepoint.com/writing-a-restful-web-service-with-slim
+### Configurações iniciais
 
+* Modifique
+* Execute o sql: mysql -u root < sql/schema.sql
+
+Esse código fonte é baseado neste tutorial: http://sitepoint.com/writing-a-restful-web-service-with-slim

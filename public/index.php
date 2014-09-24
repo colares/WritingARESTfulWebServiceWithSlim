@@ -1,9 +1,9 @@
 <?php
 require_once "../vendor/autoload.php";
 
-$dsn = "mysql:dbname=slimtut;host=localhost";
-$username = "dbuser";
-$password = "dbpass";
+$dsn = "mysql:dbname=protocolos;host=localhost";
+$username = "root";
+$password = "";
 
 $pdo = new PDO($dsn, $username, $password);
 $db = new NotORM($pdo);
@@ -17,36 +17,35 @@ $app->get("/", function() {
     echo "<h1>Hello Slim World</h1>";
 });
 
-$app->get("/books", function () use ($app, $db) {
-    $books = array();
-    foreach ($db->books() as $book) {
-        $books[]  = array(
-            "id" => $book["id"],
-            "title" => $book["title"],
-            "author" => $book["author"],
-            "summary" => $book["summary"]
+$app->get("/empresas", function () use ($app, $db) {
+    foreach ($db->empresa() as $empresa) {
+		$empresas[]  = array(
+            "id" => $empresa["id"],
+            "nome" => $empresa["nome"],
+            "descricao" => $empresa["descricao"],
+            "telefone" => $empresa["telefone"]
         );
     }
     $app->response()->header("Content-Type", "application/json");
-    echo json_encode($books);
+    echo json_encode($empresas);
 });
 
 
-$app->get("/book/:id", function ($id) use ($app, $db) {
+$app->get("/empresa/:id", function ($id) use ($app, $db) {
     $app->response()->header("Content-Type", "application/json");
-    $book = $db->books()->where("id", $id);
-    if ($data = $book->fetch()) {
+    $empresa = $db->empresa()->where("id", $id);
+    if ($data = $empresa->fetch()) {
         echo json_encode(array(
-            "id" => $data["id"],
-            "title" => $data["title"],
-            "author" => $data["author"],
-            "summary" => $data["summary"]
+			"id" => $data["id"],
+			"nome" => $data["nome"],
+			"descricao" => $data["descricao"],
+			"telefone" => $data["telefone"]
             ));
     }
     else{
         echo json_encode(array(
             "status" => false,
-            "message" => "Book ID $id does not exist"
+            "message" => "Não existe um livro com o ID $id"
             ));
     }
 });
