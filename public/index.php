@@ -50,6 +50,7 @@ $app->get("/empresa/:id", function ($id) use ($app, $db) {
     }
 });
 
+
 $app->post("/book", function () use($app, $db) {
     $app->response()->header("Content-Type", "application/json");
     $book = $app->request()->post();
@@ -93,5 +94,43 @@ $app->delete("/book/:id", function ($id) use($app, $db) {
         ));
     }
 });
+
+/**
+ * RECLAMACOES
+ */
+$app->get("/reclamacoes", function () use ($app, $db) {
+	foreach ($db->reclamacao() as $reclamacao) {
+		$reclamacoes[]  = array(
+			"id" => $reclamacao["id"],
+			"titulo" => $reclamacao["titulo"],
+			"descricao" => $reclamacao["data"],
+			"telefone" => $reclamacao["resolvido"],
+			"empresa" => $db->empresa()->where("id", $reclamacao["empresa"])
+		);
+	}
+	$app->response()->header("Content-Type", "application/json");
+	echo json_encode($reclamacoes);
+});
+
+//
+//$app->get("/reclamacao/:id", function ($id) use ($app, $db) {
+//	$app->response()->header("Content-Type", "application/json");
+//	$reclamacao = $db->reclamacao()->where("id", $id);
+//	if ($data = $empresa->fetch()) {
+//		echo json_encode(array(
+//			"id" => $data["id"],
+//			"nome" => $data["nome"],
+//			"descricao" => $data["descricao"],
+//			"telefone" => $data["telefone"]
+//		));
+//	}
+//	else{
+//		echo json_encode(array(
+//			"status" => false,
+//			"message" => "Não existe uma reclamação com o ID $id"
+//		));
+//	}
+//});
+
 
 $app->run();
